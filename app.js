@@ -1,10 +1,31 @@
+function randomOrNot() {
+    let random = true;
+    if (random) {
+        randomLab();
+    } else {
+        chooseLab()
+    }
+}
 
-function affiche_lab() {
-    new_labyrinthe(3, labyrinthes["3"]["ex-0"]);
+function randomLab() {
+    let randomCase = Math.floor(Math.random() * Object.keys(labyrinthes).length + 1);
+    let randomEx = Math.floor(Math.random() * 2 + 1);
+    new_labyrinthe(randomCase, labyrinthes[randomCase]["ex-" + randomEx])
+}
+
+function chooseLab() {
+    new_labyrinthe(4, labyrinthes["4"]["ex-0"]);
 }
 
 function new_labyrinthe(taille, ex) {
 
+    //effacer le labyrinthe 
+    let div = document.getElementById('grid-container');
+    while (div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+
+    // recréer le labyrinthe 
     document.getElementById("grid-container").style.gridTemplateColumns = "repeat(" + taille + ", 100px)";
     document.getElementById("grid-container").style.gridTemplateRows = "repeat(" + taille + ", 100px)";
 
@@ -22,16 +43,15 @@ function new_labyrinthe(taille, ex) {
             }
         }
 
-        console.log(borderstyle, "celule num " + i);
+        console.log(borderstyle, "celule num " + ex[i]["posX"] + "_" + ex[i]["posY"]);
         let element = document.createElement("DIV");
-        console.log(ex.length -1);
-        element.className = "cellule_"+ i;
-        if(i == ex.length-1){
-            element.className = "cellule_end";}
-        
+        element.id = "cellule_" + ex[i]["posX"] + "_" + ex[i]["posY"];
+        if (i == ex.length - 1) {
+            element.style.backgroundColor = "tomato"
+        }
         element.style.borderStyle = borderstyle;
+        element.style.borderColor = "rgb(233, 30, 99)";
         document.getElementById("grid-container").appendChild(element);
+
     }
 }
-
-console.log(labyrinthes["3"]["ex-0"]);

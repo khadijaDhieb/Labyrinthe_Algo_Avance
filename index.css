@@ -2,14 +2,8 @@
   display: grid;
 }
 
-.cellule {
-    border-color: rgb(255, 114, 48) ;
-}
-.cellule_0{
+#cellule_0_0{
     background-color : yellow;
-}
-.cellule_end{
-    background-color: tomato;
 }
 
 button {
