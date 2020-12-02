@@ -11,7 +11,7 @@ function randomOrNot() {
         let randomEx = Math.floor(Math.random() * 3);
         new_labyrinthe(randomSize, labyrinthes[randomSize]["ex-" + randomEx]);
     } else {
-        new_labyrinthe(5, labyrinthes["5"]["ex-0"]);
+        new_labyrinthe(8, labyrinthes["8"]["ex-0"]);
     }
 }
 
@@ -52,14 +52,23 @@ function new_labyrinthe(size, ex) {
 }
 /*=============================Résoudre le labyrinthe=======================*/
 function playDFS() {
-    //  let t0 = performance.now();
+    //retourne le temps écoulé depuis l'origine de temps.
+   let t0 = performance.now();
     DFS(arrayLab[0]);
-    // console.log("fonction DFS : " + (t0 - performance.now()));
+   console.log("fonction DFS : " + (t0 - performance.now()));
 }
 
-
+function playBFS() {
+    let t0 = performance.now();
+    BFS(arrayLab[0]);
+    console.log("fonction BFS : " + (t0 - performance.now()));
+}
 /*==============CODE SE DEPLACANT DANS LE LABYRINTHE=================*/
 function DFS(cellStart) {
+    /* stack : une pile d'assiettes
+    * la seule assiette directement accessible est la dernière assiette 
+    *qui a été déposée sur la pile.
+    *on utilise pop pour supprimer et recuperer la derniere assiette */
     let stack = [];
     stack.push(cellStart);
     visited(cellStart);
@@ -71,6 +80,29 @@ function DFS(cellStart) {
         for (let w = 0; w < listCellsAroundCellActualWithNoWalls.length; w++) {
             if (!listCellsAroundCellActualWithNoWalls[w].isVisited) {
                 stack.push(listCellsAroundCellActualWithNoWalls[w]);
+            }
+        }
+
+    }
+    return false;
+}
+
+function BFS(cellStart) {
+    /* file ou queue : une file d'attente devant un magasin pour décrire une file de données.
+    *on ajoute des éléments à une extrémité de la file 
+    *et on supprime des éléments à l'autre extrémité. 
+    * on utilise shift pour supprimer et recuperer le premier element entré */
+    let queue = [];
+    queue.push(cellStart);
+    visited(cellStart);
+    while (queue.length > 0) {
+        let cellActual = queue.shift()
+        visited(cellActual);
+        if (lastCase(cellActual)) { return; }
+        let listCellsAroundCellActualWithNoWalls = allCellsAroundCellActualWithNoWalls(cellActual);
+        for (let w = 0; w < listCellsAroundCellActualWithNoWalls.length; w++) {
+            if (!listCellsAroundCellActualWithNoWalls[w].isVisited) {
+                queue.push(listCellsAroundCellActualWithNoWalls[w]);
             }
         }
 
