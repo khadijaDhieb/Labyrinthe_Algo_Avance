@@ -12,8 +12,15 @@
 
     <button onclick="randomOrNot()">New Labyrinthe</button>
     <br>
-    <button onclick="playDFS()">Play DFS</button>
-    <button onclick="playBFS()">Play BFS</button>
+    <!-- <button onclick="playDFS()">Play DFS</button>
+    <button onclick="playBFS()">Play BFS</button> -->
+
+    <select id="myOption">
+      <option  value="pop">Play DFS</option>
+      <option value="shift">Play BFS</option>
+    </select>
+    <button onclick="resolve_labyrinthe()">Resolve</button>
+    
     <div id="grid-container">
     
     </div>

@@ -51,11 +51,45 @@ function new_labyrinthe(size, ex) {
     }
 }
 /*=============================Résoudre le labyrinthe=======================*/
+function get_DFS_or_BFS() {
+    let x = document.getElementById("myOption").value;
+    return x;
+}
+function resolve_labyrinthe() {
+    let DFS_or_BFS_choice = get_DFS_or_BFS();
+    let t0 = performance.now();
+    let pile_file = [];
+    cellStart = arrayLab[0];
+    console.log(arrayLab[0])
+    pile_file.push(cellStart);
+    visited(cellStart);
+    while (pile_file.length > 0) {
+        let cellActual;
+        if (DFS_or_BFS_choice === "pop") {
+            cellActual = pile_file.pop()
+        } else if (DFS_or_BFS_choice === "shift") {
+            cellActual = pile_file.shift()
+        }
+        visited(cellActual);
+        if (lastCase(cellActual)) { return; }
+        let listCellsAroundCellActualWithNoWalls = allCellsAroundCellActualWithNoWalls(cellActual);
+        for (let w = 0; w < listCellsAroundCellActualWithNoWalls.length; w++) {
+            if (!listCellsAroundCellActualWithNoWalls[w].isVisited) {
+                pile_file.push(listCellsAroundCellActualWithNoWalls[w]);
+            }
+        }
+
+    }
+    console.log("durée résolution avec votre choix de méthode : " + (t0 - performance.now()));
+    return false;
+}
+
+/*============= Code initial : methode DFS et BFS =====================
 function playDFS() {
     //retourne le temps écoulé depuis l'origine de temps.
-   let t0 = performance.now();
+    let t0 = performance.now();
     DFS(arrayLab[0]);
-   console.log("fonction DFS : " + (t0 - performance.now()));
+    console.log("fonction DFS : " + (t0 - performance.now()));
 }
 
 function playBFS() {
@@ -63,6 +97,8 @@ function playBFS() {
     BFS(arrayLab[0]);
     console.log("fonction BFS : " + (t0 - performance.now()));
 }
+
+*/
 /*==============CODE SE DEPLACANT DANS LE LABYRINTHE=================*/
 function DFS(cellStart) {
     /* stack : une pile d'assiettes
@@ -127,8 +163,8 @@ function allCellsAroundCellActualWithNoWalls(cellActual) {
 
     let result = [];
     for (let i = 0; i < cellActual.walls.length; i++) {
-    /* on cherche les cases autour de la case courante.
-    si le border style est false càd pas de wall , on prend la case */
+        /* on cherche les cases autour de la case courante.
+        si le border style est false càd pas de wall , on prend la case */
         if (!cellActual.walls[i]) {
             switch (i) {
                 case 0: result.push(getCaseByCoordinate(cellActual.posX - 1, cellActual.posY));//haut
